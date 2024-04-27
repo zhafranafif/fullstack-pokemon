@@ -13,4 +13,37 @@ export const pokemonApi = createApi({
     })
 })
 
+export const myPokemonApi = createApi({
+    reducerPath: 'myPokemonAPI',
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://silver-winner-jwwg7jgg44x35jg9-3001.app.github.dev/'}),
+    endpoints: (builder) => ({
+        getAllMyPokemon: builder.query({
+            query: () => '/my-pokemon'
+        }),
+        releasePokemon: builder.mutation({
+            query: ({name}) => ({
+                url:`/release-pokemon/${name}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ["myPokemon"],
+        }),
+        catch: builder.mutation({
+            query: ({name}) => ({
+                url:`/catch-pokemon/${name}`,
+                method:'POST',
+            }),
+            invalidatesTags: ["myPokemon"],
+        }),
+        updatePokemon: builder.mutation({
+            query: ({name}) => ({
+                url:`/my-pokemon/${name}/nickname`,
+                method: 'PUT'
+            }),
+            invalidatesTags: ["myPokemon"],
+        })
+    })
+})
+
+export const  { useGetAllMyPokemonQuery, useCatchMutation, useReleasePokemonMutation, useUpdatePokemonMutation } = myPokemonApi
 export const { useGetAllPokemonQuery, useGetPokemonByNameQuery } = pokemonApi
+
